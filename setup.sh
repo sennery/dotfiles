@@ -17,7 +17,7 @@ function replace_file {
     fi
 
     if [[ -n "${new_file}" && -n "${old_file}" ]]; then
-        ln -s "${new_file}" "${old_file}"
+        runcmd ln -s "${new_file}" "${old_file}"
     fi
 }
 
@@ -34,7 +34,7 @@ function replace_dir {
     fi
 
     if [[ -n "${new_dir}" && -n "${old_dir}" ]]; then
-        ln -s "${new_dir}" "${old_dir}"
+        runcmd ln -s "${new_dir}" "${old_dir}"
     fi
 }
 
@@ -46,40 +46,73 @@ function printh {
     printf "%*.*s\n\n" 0 $(((PAD_LENGTH - ${#1}) / 2 + (PAD_LENGTH - ${#1}) % 2 )) "$PAD"
 }
 
-printh "https://sennery.dev"
-printh "dotfiles setup script"
-
-export CONFIG_HOME=$HOME/.config
+CONFIG_HOME=$HOME/.config
 if [[ ! -d "$CONFIG_HOME" ]]; then
     mkdir -p "$CONFIG_HOME"
 fi
-export DF_HOME=$HOME/dotfiles
-export NVIM_HOME=$CONFIG_HOME/nvim
+DF_HOME=$HOME/dotfiles
 
-HAS_NVM="$(command -v nvm)"
-HAS_NVIM="$(command -v nvim)"
+function setup_bash {
+    printh "Setup bash"
+    replace_file "$HOME/.bashrc" "$DF_HOME/.bashrc"
+    printh "Done"
+}
+
+function setup_git {
+    printh "Setup git"
+    replace_file "$HOME/.gitconfig" "$DF_HOME/.gitconfig"
+    printh "Done"
+}
+
+function setup_kitty {
+    printh "Setup kitty"
+    if [[ -z $(command -v kitty) ]]; then
+        echo "No kitty installation found, installing..."
+    fi
+    replace_dir "$CONFIG_HOME/kitty" "$DF_HOME/kitty"
+    printh "Done"
+}
+
+function setup_nvim {
+    printh "Setup neovim"
+    if [[ -z $(command -v nvim) ]]; then
+        echo "No neovim installation found, installing..."
+    fi
+    replace_dir "$CONFIG_HOME/nvim" "$DF_HOME/nvim"
+    printh "Done"
+}
+
+printh "https://sennery.dev"
+printh "dotfiles setup script"
 
 PS3="What to setup: "
-CONFIGS=(all neovim git bash quit)
+CONFIGS=(all neovim git bash kitty quit)
 select conf in ${CONFIGS[@]}; do
     case $conf in
         all)
             printh "Installing all"
+            setup_bash
+            setup_git
+            setup_kitty
+            setup_nvim
             break;;
         neovim)
-            echo "You chose ${conf}"
+            setup_nvim
             ;;
         git)
-            echo "You chose ${conf}"
+            setup_git
             ;;
         bash)
-            echo "You chose ${conf}"
+            setup_bash
+            ;;
+        kitty)
+            setup_kitty
             ;;
         quit)
             echo "Okay, bye!"
             break;;
         *)
-            echo "Whoops"
+            echo "Whoops, there is no option like this. Choose another"
             ;;
     esac
 done
