@@ -25,7 +25,6 @@ function replace_dir {
     local old_dir=$1
     local new_dir=$2
     if [[ -d "${old_dir}" ]]; then
-        # Symlink, just remove it
         if [[ -L "${old_dir}" ]]; then
             runcmd unlink "${old_dir}"
         else
@@ -38,8 +37,8 @@ function replace_dir {
     fi
 }
 
-PAD=$(printf "%0.1s" "-"{1..100})
-PAD_LENGTH=100
+PAD=$(printf "%0.1s" "."{1..100})
+PAD_LENGTH=70
 function printh {
     printf "\n%*.*s" 0 $(((PAD_LENGTH - ${#1}) / 2 )) "$PAD"
     printf " %s " "$1"
@@ -55,13 +54,13 @@ DF_HOME=$HOME/dotfiles
 function setup_bash {
     printh "Setup bash"
     replace_file "$HOME/.bashrc" "$DF_HOME/.bashrc"
-    printh "Done"
+    printf "Done\n\n"
 }
 
 function setup_git {
     printh "Setup git"
     replace_file "$HOME/.gitconfig" "$DF_HOME/.gitconfig"
-    printh "Done"
+    printf "Done\n\n"
 }
 
 function setup_kitty {
@@ -70,7 +69,7 @@ function setup_kitty {
         echo "No kitty installation found, installing..."
     fi
     replace_dir "$CONFIG_HOME/kitty" "$DF_HOME/kitty"
-    printh "Done"
+    printf "Done\n\n"
 }
 
 function setup_nvim {
@@ -79,7 +78,7 @@ function setup_nvim {
         echo "No neovim installation found, installing..."
     fi
     replace_dir "$CONFIG_HOME/nvim" "$DF_HOME/nvim"
-    printh "Done"
+    printf "Done\n\n"
 }
 
 printh "https://sennery.dev"
