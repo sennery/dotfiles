@@ -72,10 +72,21 @@ function setup_kitty {
     printf "Done\n\n"
 }
 
+function install_nvim {
+    printh "Installing neovim"
+    runcmd curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+    runcmd sudo rm -rf /opt/nvim
+    runcmd sudo tar -C /opt -xzf nvim-linux64.tar.gz
+    runcmd rm nvim-linux64.tar.gz
+    printf "Done\n\n"
+}
+
 function setup_nvim {
     printh "Setup neovim"
     if [[ -z $(command -v nvim) ]]; then
         echo "No neovim installation found, installing..."
+        install_nvim
+        echo "Neovim is installed, continue setup"
     fi
     replace_dir "$CONFIG_HOME/nvim" "$DF_HOME/nvim"
     printf "Done\n\n"
@@ -85,8 +96,8 @@ printh "https://sennery.dev"
 printh "dotfiles setup script"
 
 PS3="What to setup: "
-CONFIGS=(all neovim git bash kitty quit)
-select conf in ${CONFIGS[@]}; do
+CONFIGS=("all" "neovim" "git" "bash" "kitty" "install neovim" "quit")
+select conf in "${CONFIGS[@]}"; do
     case $conf in
         all)
             printh "Installing all"
@@ -97,6 +108,9 @@ select conf in ${CONFIGS[@]}; do
             break;;
         neovim)
             setup_nvim
+            ;;
+        "install neovim")
+            install_nvim
             ;;
         git)
             setup_git
