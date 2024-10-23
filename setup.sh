@@ -40,7 +40,7 @@ function replace_dir {
 PAD=$(printf "%0.1s" "."{1..100})
 PAD_LENGTH=70
 function printh {
-    printf "\n%*.*s" 0 $(((PAD_LENGTH - ${#1}) / 2 )) "$PAD"
+    printf "%*.*s" 0 $(((PAD_LENGTH - ${#1}) / 2 )) "$PAD"
     printf " %s " "$1"
     printf "%*.*s\n\n" 0 $(((PAD_LENGTH - ${#1}) / 2 + (PAD_LENGTH - ${#1}) % 2 )) "$PAD"
 }
@@ -63,10 +63,19 @@ function setup_git {
     printf "Done\n\n"
 }
 
+function install_kitty {
+    printh "Installing kitty"
+    runcmd curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    runcmd ln -s ~/.local/kitty.app /usr/bin/kitty
+    printf "Done\n\n"
+}
+
 function setup_kitty {
     printh "Setup kitty"
     if [[ -z $(command -v kitty) ]]; then
         echo "No kitty installation found, installing..."
+        install_kitty
+        echo "Kitty is installed, continue setup"
     fi
     replace_dir "$CONFIG_HOME/kitty" "$DF_HOME/kitty"
     printf "Done\n\n"
@@ -96,7 +105,7 @@ printh "https://sennery.dev"
 printh "dotfiles setup script"
 
 PS3="What to setup: "
-CONFIGS=("all" "neovim" "git" "bash" "kitty" "install neovim" "quit")
+CONFIGS=("all" "git" "bash" "kitty" "install kitty" "neovim" "install neovim" "quit")
 select conf in "${CONFIGS[@]}"; do
     case $conf in
         all)
@@ -106,20 +115,23 @@ select conf in "${CONFIGS[@]}"; do
             setup_kitty
             setup_nvim
             break;;
-        neovim)
-            setup_nvim
-            ;;
-        "install neovim")
-            install_nvim
-            ;;
         git)
             setup_git
             ;;
         bash)
             setup_bash
             ;;
+        neovim)
+            setup_nvim
+            ;;
+        "install neovim")
+            install_nvim
+            ;;
         kitty)
             setup_kitty
+            ;;
+        "install kitty")
+            install_nvim
             ;;
         quit)
             echo "Okay, bye!"
