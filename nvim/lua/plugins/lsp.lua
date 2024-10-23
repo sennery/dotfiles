@@ -47,8 +47,12 @@ return {
         end
       end
 
+      require('mason').setup()
+      local mason_registry = require 'mason-registry'
+      local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
+
       local servers = {
-        volar = {
+        ts_ls = {
           filetypes = {
             'typescript',
             'javascript',
@@ -57,21 +61,33 @@ return {
             'vue',
           },
           init_options = {
-            vue = {
-              hybridMode = false,
-            },
-            typescript = {
-              experimental = {
-                useVsCodeWatcher = false,
+            plugins = {
+              {
+                name = '@vue/typescript-plugin',
+                location = vue_language_server_path,
+                languages = { 'vue' },
               },
             },
           },
           on_new_config = function(new_config, new_root_dir)
-            new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
+            new_config.init_options.tsdk = get_typescript_server_path(new_root_dir)
           end,
           capabilities = {
             documentFormattingProvider = false,
           },
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayParameterNameHints = 'literals', -- 'none' | 'literals' | 'all'
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+              },
+            },
+          },
+        },
+        volar = {
           settings = {
             vue = {
               inlayHints = {
@@ -79,15 +95,6 @@ return {
                 missingProps = true,
                 optionsWrapper = true,
                 vBindShorthand = true,
-              },
-            },
-            typescript = {
-              inlayHints = {
-                variableTypes = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = 'literals' },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
               },
             },
           },
@@ -123,8 +130,6 @@ return {
 
         bashls = {},
       }
-
-      require('mason').setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
