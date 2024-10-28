@@ -88,6 +88,9 @@ return {
           },
         },
         volar = {
+          capabilities = {
+            documentFormattingProvider = false,
+          },
           settings = {
             vue = {
               inlayHints = {
