@@ -16,7 +16,7 @@ return {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      -- { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
       -- vim.lsp.set_log_level 'debug'
