@@ -25,6 +25,10 @@ fi
 
 unset rc
 
+# Set default editor
+export EDITOR='nvim'
+set -o vi
+
 # pnpm
 export PNPM_HOME="/home/sennery/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
