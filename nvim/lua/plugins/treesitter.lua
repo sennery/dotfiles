@@ -99,4 +99,16 @@ return {
       require('nvim-ts-autotag').setup(opts)
     end,
   },
+
+  -- Join and split code blocks
+  {
+    'Wansmer/treesj',
+    keys = {
+      { '<leader>cm', ':TSJToggle<CR>', desc = 'Toggle [M]ultiline block' },
+    },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+    config = function()
+      require('treesj').setup {}
+    end,
+  },
 }
