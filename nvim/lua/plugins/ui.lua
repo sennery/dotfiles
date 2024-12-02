@@ -51,8 +51,7 @@ return {
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
     keys = {
-      { '<c-b>', ':Neotree toggle reveal<CR>', silent = true },
-      { '\\', ':Neotree reveal<CR>', silent = true },
+      { '\\', ':Neotree toggle reveal<CR>', silent = true },
     },
     config = function()
       require('neo-tree').setup {
