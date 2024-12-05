@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function runcmd {
-    echo "$@"
+    echo "Running: $@"
     "$@"
 }
 
@@ -101,43 +101,56 @@ function setup_nvim {
     printf "Done\n\n"
 }
 
+function setup_config {
+    printh "Full setup"
+    setup_bash
+    setup_git
+    setup_kitty
+    setup_nvim
+}
+
+function install_all {
+    printh "Installing..."
+    install_nvim
+    install_kitty
+}
+
 printh "https://sennery.dev"
 printh "dotfiles setup script"
 
-PS3="What to setup: "
-CONFIGS=("all" "git" "bash" "kitty" "install kitty" "neovim" "install neovim" "quit")
-select conf in "${CONFIGS[@]}"; do
-    case $conf in
-        all)
-            printh "Installing all"
-            setup_bash
-            setup_git
-            setup_kitty
-            setup_nvim
-            break;;
-        git)
-            setup_git
-            ;;
-        bash)
-            setup_bash
-            ;;
-        neovim)
-            setup_nvim
-            ;;
-        "install neovim")
-            install_nvim
-            ;;
-        kitty)
-            setup_kitty
-            ;;
-        "install kitty")
-            install_nvim
-            ;;
-        quit)
-            echo "Okay, bye!"
-            break;;
-        *)
-            echo "Whoops, there is no option like this. Choose another"
-            ;;
-    esac
-done
+if [[ $1 == "-i" ]]; then
+    printh "running in interactive mode"
+    PS3="What to setup: "
+    CONFIGS=("config" "install" "install kitty" "install neovim" "quit")
+    select conf in "${CONFIGS[@]}"; do
+        case $conf in
+            config)
+                setup_config
+                ;;
+            install)
+                install_all
+                ;;
+            "install kitty")
+                install_kitty
+                ;;
+            "install neovim")
+                install_nvim
+                ;;
+            quit)
+                echo "Okay, bye!"
+                break;;
+            *)
+                echo "Whoops, there is no option like this. Choose another"
+                ;;
+        esac
+    done
+    exit 0
+fi
+
+if [[ $1 == "--install" ]]; then
+    install_all
+    exit 0
+fi
+
+setup_config
+
