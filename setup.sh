@@ -1,8 +1,27 @@
 #!/usr/bin/env bash
 
+dry_run="0"
+install="0"
+interactive="0"
+
+for arg in "$@"; do
+    if [[ $arg == "--install" ]]; then
+        install="1"
+    elif [[ $arg == "-i" ]]; then
+        interactive="1"
+    elif [[ $arg == "--dry" ]]; then
+        dry_run="1"
+        echo "[DRY_RUN] mode"
+    fi
+done
+
 function runcmd {
-    echo "Running: $@"
-    "$@"
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] Running: $@"
+    else
+        echo "Running: $@"
+        "$@"
+    fi
 }
 
 function replace_file {
@@ -118,7 +137,7 @@ function install_all {
 printh "https://sennery.dev"
 printh "dotfiles setup script"
 
-if [[ $1 == "-i" ]]; then
+if [[ $interactive == "1" ]]; then
     printh "running in interactive mode"
     PS3="What to setup: "
     CONFIGS=("config" "install" "install kitty" "install neovim" "quit")
@@ -147,7 +166,7 @@ if [[ $1 == "-i" ]]; then
     exit 0
 fi
 
-if [[ $1 == "--install" ]]; then
+if [[ $install == "1" ]]; then
     install_all
     exit 0
 fi
