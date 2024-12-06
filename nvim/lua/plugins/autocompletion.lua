@@ -39,11 +39,20 @@ return {
       'onsails/lspkind-nvim', -- add the nice source + completion item kind to the menu
 
       -- Codeium completion
+      -- {
+      --   'Exafunction/codeium.nvim',
+      --   dependencies = { 'nvim-lua/plenary.nvim' },
+      --   config = function()
+      --     require('codeium').setup {}
+      --   end,
+      -- },
       {
-        'Exafunction/codeium.nvim',
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        'supermaven-inc/supermaven-nvim',
         config = function()
-          require('codeium').setup {}
+          require('supermaven-nvim').setup {
+            disable_inline_completion = true,
+            disable_keymaps = true,
+          }
         end,
       },
     },
@@ -74,6 +83,7 @@ return {
               path = '[Path]',
               luasnip = '[LuaSnip]',
               codeium = '[Codeium]',
+              supermaven = '[Supermaven]',
             },
           },
         },
@@ -86,7 +96,8 @@ return {
             name = 'lazydev',
             group_index = 0,
           },
-          { name = 'codeium' },
+          -- { name = 'codeium' },
+          { name = 'supermaven' },
           { name = 'nvim_lsp' },
           { name = 'nvim_lsp_signature_help' },
           { name = 'luasnip' },
