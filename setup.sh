@@ -82,9 +82,19 @@ function setup_git {
     printf "Done\n\n"
 }
 
+function load_kitty {
+    curl -LO https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+}
 function install_kitty {
     printh "Installing kitty"
-    runcmd curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    runcmd load_kitty
+    if [[ -e /usr/bin/kitty ]]; then
+        if [[ -L /usr/bin/kitty ]]; then
+            runcmd unlink /usr/bin/kitty
+        else
+            runcmd mv /usr/bin/kitty
+        fi
+    fi
     runcmd ln -s ~/.local/kitty.app /usr/bin/kitty
     printf "Done\n\n"
 }
