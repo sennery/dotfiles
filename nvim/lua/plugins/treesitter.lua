@@ -49,15 +49,15 @@ return {
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<TAB>',
-          node_incremental = '<TAB>',
-          node_decremental = '<bs>',
-          scope_incremental = false,
-        },
-      },
+      -- incremental_selection = {
+      --   enable = true,
+      --   keymaps = {
+      --     init_selection = '<TAB>',
+      --     node_incremental = '<TAB>',
+      --     node_decremental = '<bs>',
+      --     scope_incremental = false,
+      --   },
+      -- },
       textobjects = {
         move = {
           enable = true,

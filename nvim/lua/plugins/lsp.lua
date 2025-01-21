@@ -38,8 +38,8 @@ return {
         local global_ts = vim.fn.expand '$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/lib/node_modules/typescript/lib'
         local project_ts = ''
         local function check_dir(path)
-          project_ts = lspconfig.util.path.join(path, 'node_modules', 'typescript', 'lib')
-          if lspconfig.util.path.exists(project_ts) then
+          project_ts = table.concat { path, 'node_modules', 'typescript', 'lib' }
+          if vim.loop.fs_stat(project_ts) then
             return path
           end
         end

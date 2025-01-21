@@ -111,61 +111,61 @@ return {
   },
 
   -- Tabs
-  {
-    'akinsho/bufferline.nvim',
-    event = 'VeryLazy',
-    keys = {
-      { '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle [P]in' },
-      { '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-[P]inned Buffers' },
-      { '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', desc = 'Delete [O]ther Buffers' },
-      { '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete Buffers to the [R]ight' },
-      { '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete Buffers to the [L]eft' },
-      { '<leader>bh', '<Cmd>BufferLinePick<CR>', desc = '[H]ighlight buffer picks' },
-      { 'H', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev Buffer' },
-      { 'L', '<cmd>BufferLineCycleNext<cr>', desc = 'Next Buffer' },
-      { '[b', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev [B]uffer' },
-      { ']b', '<cmd>BufferLineCycleNext<cr>', desc = 'Next [B]uffer' },
-    },
-    opts = {
-      options = {
-        -- stylua: ignore
-        close_command = function(n)
-          require('mini.bufremove').delete(n, false)
-        end,
-        -- stylua: ignore
-        right_mouse_command = function(n)
-          require("mini.bufremove").delete(n, false)
-        end,
-        diagnostics = 'nvim_lsp',
-        diagnostics_indicator = function(count)
-          return '(' .. count .. ')'
-        end,
-        always_show_bufferline = true,
-        show_buffer_close_icons = false,
-        offsets = {
-          {
-            filetype = 'neo-tree',
-            text = '',
-            highlight = 'Directory',
-            text_align = 'left',
-          },
-        },
-        hover = {
-          enabled = true,
-          delay = 200,
-          reveal = { 'close' },
-        },
-        indicator = {
-          style = 'icon',
-        },
-      },
-    },
-    config = function(_, opts)
-      local bufferline = require 'bufferline'
-      opts.options.style_preset = bufferline.style_preset.no_italic
-      bufferline.setup(opts)
-    end,
-  },
+  -- {
+  --   'akinsho/bufferline.nvim',
+  --   event = 'VeryLazy',
+  --   keys = {
+  --     { '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle [P]in' },
+  --     { '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-[P]inned Buffers' },
+  --     { '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', desc = 'Delete [O]ther Buffers' },
+  --     { '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete Buffers to the [R]ight' },
+  --     { '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete Buffers to the [L]eft' },
+  --     { '<leader>bh', '<Cmd>BufferLinePick<CR>', desc = '[H]ighlight buffer picks' },
+  --     { 'H', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev Buffer' },
+  --     { 'L', '<cmd>BufferLineCycleNext<cr>', desc = 'Next Buffer' },
+  --     { '[b', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev [B]uffer' },
+  --     { ']b', '<cmd>BufferLineCycleNext<cr>', desc = 'Next [B]uffer' },
+  --   },
+  --   opts = {
+  --     options = {
+  --       -- stylua: ignore
+  --       close_command = function(n)
+  --         require('mini.bufremove').delete(n, false)
+  --       end,
+  --       -- stylua: ignore
+  --       right_mouse_command = function(n)
+  --         require("mini.bufremove").delete(n, false)
+  --       end,
+  --       diagnostics = 'nvim_lsp',
+  --       diagnostics_indicator = function(count)
+  --         return '(' .. count .. ')'
+  --       end,
+  --       always_show_bufferline = true,
+  --       show_buffer_close_icons = false,
+  --       offsets = {
+  --         {
+  --           filetype = 'neo-tree',
+  --           text = '',
+  --           highlight = 'Directory',
+  --           text_align = 'left',
+  --         },
+  --       },
+  --       hover = {
+  --         enabled = true,
+  --         delay = 200,
+  --         reveal = { 'close' },
+  --       },
+  --       indicator = {
+  --         style = 'icon',
+  --       },
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     local bufferline = require 'bufferline'
+  --     opts.options.style_preset = bufferline.style_preset.no_italic
+  --     bufferline.setup(opts)
+  --   end,
+  -- },
 
   -- Show keybinds
   {
@@ -255,5 +255,15 @@ return {
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,
+  },
+
+  -- File explorer
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 }
