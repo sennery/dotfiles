@@ -11,7 +11,9 @@ return {
         char = '▏',
       },
       scope = {
-        enabled = false,
+        char = '▎',
+        show_start = false,
+        show_end = false,
       },
     },
   },
@@ -69,15 +71,6 @@ return {
           vim.b.miniindentscope_disable = true
         end,
       })
-      require('mini.indentscope').setup {
-        symbol = '▏',
-        draw = {
-          animation = require('mini.indentscope').gen_animation.none(),
-        },
-        options = {
-          try_as_border = true,
-        },
-      }
 
       vim.keymap.set('n', '<leader>bd', function()
         require('mini.bufremove').delete(0, false)

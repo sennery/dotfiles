@@ -90,9 +90,9 @@ return {
         globalstatus = true,
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
-        ignore_focus = { 'neo-tree' },
+        always_show_tabline = false,
       },
-      extensions = { 'neo-tree', 'lazy' },
+      extensions = { 'oil', 'lazy', 'quickfix' },
       sections = {
         lualine_c = {
           { 'filename', path = 1 },
