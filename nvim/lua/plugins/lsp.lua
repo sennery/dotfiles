@@ -13,7 +13,6 @@ return {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
@@ -25,13 +24,8 @@ return {
       -- vim.lsp.set_log_level 'debug'
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-      -- capabilities.workspace = {
-      --   didChangeWatchedFiles = {
-      --     dynamicRegistration = true,
-      --   },
-      -- }
 
       local lspconfig = require 'lspconfig'
 
@@ -166,9 +160,10 @@ return {
         'stylua', -- Used to format Lua code
         'prettierd',
       })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        ensure_installed = ensure_installed,
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -217,7 +212,7 @@ return {
             end
           end
 
-          if client.supports_method 'textDocument/documentHighlight' then
+          if client:supports_method 'textDocument/documentHighlight' then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
@@ -240,17 +235,17 @@ return {
             })
           end
 
-          if client.supports_method 'textDocument/documentSymbol' then
+          if client:supports_method 'textDocument/documentSymbol' then
             require('nvim-navic').attach(client, event.buf)
           end
 
-          if client.supports_method 'textDocument/inlayHint' then
+          if client:supports_method 'textDocument/inlayHint' then
             map('<leader>ch', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, 'Toggle Inlay [H]ints')
           end
 
-          if client.supports_method 'textDocument/codeLens' then
+          if client:supports_method 'textDocument/codeLens' then
             map('<leader>cl', function()
               local lenses = vim.lsp.codelens.get(event.buf)
               vim.lsp.codelens.display(lenses, event.buf, event.data.client_id)
