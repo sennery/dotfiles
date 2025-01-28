@@ -112,10 +112,10 @@ function setup_kitty {
 
 function install_nvim {
     printh "Installing neovim"
-    runcmd curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-    runcmd sudo rm -rf /opt/nvim
-    runcmd sudo tar -C /opt -xzf nvim-linux64.tar.gz
-    runcmd rm nvim-linux64.tar.gz
+    runcmd curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
+    runcmd sudo rm -rf /opt/nvim-linux-x86_64
+    runcmd sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+    runcmd rm nvim-linux-x86_64.tar.gz
     printf "Done\n\n"
 }
 

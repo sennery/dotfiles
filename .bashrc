@@ -41,7 +41,7 @@ export NVM_DIR="$HOME/.nvm"
 export DEFAULT_NODE_VERSION="$(nvm version default)"
 
 # nvim
-export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 #histoty verify before execute
 shopt -s histverify
