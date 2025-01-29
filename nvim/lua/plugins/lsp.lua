@@ -3,7 +3,13 @@ return {
   {
     'folke/lazydev.nvim',
     ft = 'lua', -- only load on lua files
-    opts = {},
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
   },
 
   -- LSP Configuration & Plugins
@@ -33,8 +39,8 @@ return {
         local global_ts = vim.fn.expand '$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/lib/node_modules/typescript/lib'
         local project_ts = ''
         local function check_dir(path)
-          project_ts = table.concat { path, 'node_modules', 'typescript', 'lib' }
-          if vim.loop.fs_stat(project_ts) then
+          project_ts = path .. '/node_modules/typescript/lib'
+          if vim.uv.fs_stat(project_ts) then
             return path
           end
         end
