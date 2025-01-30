@@ -1,7 +1,3 @@
--- set leader key
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
 vim.g.have_nerd_font = true
 
 -- Setting options
@@ -65,6 +61,7 @@ vim.fn.sign_define('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSi
 vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticSignHint' })
 
 vim.diagnostic.config {
+  virtual_text = true,
   signs = {
     --support diagnostic severity / diagnostic type name
     text = {
