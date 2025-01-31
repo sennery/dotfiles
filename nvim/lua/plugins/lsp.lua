@@ -191,7 +191,7 @@ return {
           map('gd', builtin.lsp_definitions, '[G]oto [D]efinition')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
           -- Find references for the word under your cursor.
-          map('gr', builtin.lsp_references, '[G]oto [R]eferences')
+          map('gR', builtin.lsp_references, '[G]oto [R]eferences')
           -- Jump to the implementation of the word under your cursor.
           map('gI', builtin.lsp_implementations, '[G]oto [I]mplementation')
           -- Jump to the type of the word under your cursor.

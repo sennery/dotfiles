@@ -260,6 +260,9 @@ return {
   -- File explorer
   {
     'stevearc/oil.nvim',
+    keys = {
+      { '<leader>o', ':Oil<CR>', silent = true, desc = 'Open [O]il' },
+    },
     ---@module 'oil'
     ---@type oil.SetupOpts
     opts = {},
