@@ -9,7 +9,11 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
-      keymap = { preset = 'default' },
+      keymap = {
+        preset = 'default',
+        ['<C-l>'] = { 'snippet_forward', 'fallback' },
+        ['<C-h>'] = { 'snippet_backward', 'fallback' },
+      },
 
       appearance = {
         -- Sets the fallback highlight groups to nvim-cmp's highlight groups
@@ -52,5 +56,11 @@ return {
       },
     },
     opts_extend = { 'sources.default' },
+  },
+
+  -- AI Autocompletion
+  {
+    'supermaven-inc/supermaven-nvim',
+    opts = {},
   },
 }
