@@ -24,7 +24,7 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     keys = {
-      { '<leader>gn', '<cmd>Neogit<cr>', desc = '[G]it [N]eogit Open' },
+      { '<leader>gg', '<cmd>Neogit<cr>', desc = '[G]it Neo[g]it Open' },
       { '<leader>gp', '<cmd>Neogit pull<cr>', desc = '[G]it [P]ull' },
       { '<leader>gP', '<cmd>Neogit push<cr>', desc = '[G]it [P]ush' },
       { '<leader>gf', '<cmd>Neogit fetch<cr>', desc = '[G]it [F]etch' },
