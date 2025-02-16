@@ -70,9 +70,10 @@ if [[ ! -d "$CONFIG_HOME" ]]; then
 fi
 DF_HOME=$HOME/dotfiles
 
-function setup_bash {
-    printh "Setup bash"
+function setup_zsh {
+    printh "Setup zsh"
     replace_file "$HOME/.bashrc" "$DF_HOME/.bashrc"
+    replace_file "$HOME/.zshrc" "$DF_HOME/.zshrc"
     printf "Done\n\n"
 }
 
@@ -132,9 +133,9 @@ function setup_nvim {
 
 function setup_config {
     printh "Full setup"
-    setup_bash
+    setup_zsh
     setup_git
-    setup_kitty
+    # setup_kitty
     setup_nvim
 }
 

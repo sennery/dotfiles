@@ -25,8 +25,13 @@ fi
 
 unset rc
 
+# Set zsh as default shell
+export SHELL=`which zsh`
+[ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
+
 # Set default editor
-export EDITOR='nvim'
+export EDITOR=nvim
+export VISUAL=nvim
 set -o vi
 
 # pnpm
