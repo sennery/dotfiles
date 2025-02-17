@@ -26,8 +26,8 @@ fi
 unset rc
 
 # Set zsh as default shell
-export SHELL=`which zsh`
-[ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
+# export SHELL=`which zsh`
+# [ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
 
 # Set default editor
 export EDITOR=nvim
@@ -35,15 +35,16 @@ export VISUAL=nvim
 set -o vi
 
 # pnpm
-export PNPM_HOME="/home/sennery/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
+# TODO: think about fully moving to fnm
 # nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export DEFAULT_NODE_VERSION="$(nvm version default)"
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export DEFAULT_NODE_VERSION="$(nvm version default)"
 
 # nvim
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
