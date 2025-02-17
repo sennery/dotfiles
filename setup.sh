@@ -74,6 +74,12 @@ function setup_zsh {
     printh "Setup zsh"
     replace_file "$HOME/.bashrc" "$DF_HOME/.bashrc"
     replace_file "$HOME/.zshrc" "$DF_HOME/.zshrc"
+    replace_file "$HOME/.zshenv" "$DF_HOME/.zshenv"
+    if [[ $SHELL != $(which zsh) ]]; then
+        runcmd chsh -s $(which zsh)
+        # fedora only
+        # runcmd sudo chsh $USER
+    fi
     printf "Done\n\n"
 }
 
