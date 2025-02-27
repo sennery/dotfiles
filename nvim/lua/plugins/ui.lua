@@ -43,43 +43,43 @@ return {
   -- },
 
   -- File explorer
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-    },
-    keys = {
-      { '\\', ':Neotree toggle reveal<CR>', silent = true },
-    },
-    config = function()
-      require('neo-tree').setup {
-        default_component_configs = {
-          name = {
-            use_git_status_colors = true,
-          },
-          diagnostics = {
-            highlights = {
-              hint = 'DiagnosticHint',
-              info = 'DiagnosticInfo',
-              warn = 'DiagnosticWarn',
-              error = 'DiagnosticError',
-            },
-          },
-        },
-        window = {
-          width = 30,
-        },
-        filesystem = {
-          follow_current_file = {
-            enabled = true,
-          },
-          use_libuv_file_watcher = true,
-        },
-      }
-    end,
-  },
+  -- {
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'v3.x',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+  --   },
+  --   keys = {
+  --     { '\\', ':Neotree toggle reveal<CR>', silent = true },
+  --   },
+  --   config = function()
+  --     require('neo-tree').setup {
+  --       default_component_configs = {
+  --         name = {
+  --           use_git_status_colors = true,
+  --         },
+  --         diagnostics = {
+  --           highlights = {
+  --             hint = 'DiagnosticHint',
+  --             info = 'DiagnosticInfo',
+  --             warn = 'DiagnosticWarn',
+  --             error = 'DiagnosticError',
+  --           },
+  --         },
+  --       },
+  --       window = {
+  --         width = 30,
+  --       },
+  --       filesystem = {
+  --         follow_current_file = {
+  --           enabled = true,
+  --         },
+  --         use_libuv_file_watcher = true,
+  --       },
+  --     }
+  --   end,
+  -- },
 
   -- Status line
   {
