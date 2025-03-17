@@ -1,5 +1,28 @@
 #!/usr/bin/env bash
 
+# TODO: add fnm installation
+# TODO: add ghostty installation
+# TODO: add oh-my-zsh installation
+
+function print_dim {
+    printf "\033[2m%b\033[0m" "$1"
+}
+function print_bold {
+    printf "\033[1m%b\033[0m" "$1"
+}
+function print_color {
+    printf "\033[38;5;%s;48;5;%sm %b \033[0m" "$1" "$2" "$3"
+}
+
+function print_info {
+    print_color "232" "224" "INFO"
+    printf " %b\n" "$1"
+}
+function print_warn {
+    print_color "235" "214" "WARN"
+    printf " %b\n" "$1"
+}
+
 dry_run="0"
 install="0"
 interactive="0"
@@ -11,15 +34,18 @@ for arg in "$@"; do
         interactive="1"
     elif [[ $arg == "--dry" ]]; then
         dry_run="1"
-        echo "[DRY_RUN] mode"
+        print_warn "used [DRY_RUN] mode - nothing will be installed!"
     fi
 done
 
 function runcmd {
     if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] Running: $@"
+        printf "[DRY_RUN] "
+        print_dim "Running: "
+        printf "%s \n" "$*"
     else
-        echo "Running: $@"
+        print_dim "Running: "
+        printf "%s \n" "$*"
         "$@"
     fi
 }
@@ -56,14 +82,6 @@ function replace_dir {
     fi
 }
 
-PAD=$(printf "%0.1s" "."{1..100})
-PAD_LENGTH=70
-function printh {
-    printf "%*.*s" 0 $(((PAD_LENGTH - ${#1}) / 2 )) "$PAD"
-    printf " %s " "$1"
-    printf "%*.*s\n\n" 0 $(((PAD_LENGTH - ${#1}) / 2 + (PAD_LENGTH - ${#1}) % 2 )) "$PAD"
-}
-
 CONFIG_HOME=$HOME/.config
 if [[ ! -d "$CONFIG_HOME" ]]; then
     mkdir -p "$CONFIG_HOME"
@@ -71,7 +89,7 @@ fi
 DF_HOME=$HOME/dotfiles
 
 function setup_zsh {
-    printh "Setup zsh"
+    print_bold "Setup zsh\n"
     replace_file "$HOME/.bashrc" "$DF_HOME/.bashrc"
     replace_file "$HOME/.zshrc" "$DF_HOME/.zshrc"
     replace_file "$HOME/.zshenv" "$DF_HOME/.zshenv"
@@ -80,20 +98,20 @@ function setup_zsh {
         # fedora only
         # runcmd sudo chsh $USER
     fi
-    printf "Done\n\n"
+    print_bold "Done\n\n"
 }
 
 function setup_git {
-    printh "Setup git"
+    print_bold "Setup git\n"
     replace_file "$HOME/.gitconfig" "$DF_HOME/.gitconfig"
-    printf "Done\n\n"
+    print_bold "Done\n\n"
 }
 
 function load_kitty {
     curl -LO https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 }
 function install_kitty {
-    printh "Installing kitty"
+    print_bold "Installing kitty\n"
     runcmd load_kitty
     if [[ -e /usr/bin/kitty ]]; then
         if [[ -L /usr/bin/kitty ]]; then
@@ -103,42 +121,42 @@ function install_kitty {
         fi
     fi
     runcmd ln -s ~/.local/kitty.app /usr/bin/kitty
-    printf "Done\n\n"
+    print_bold "Done\n\n"
 }
 
 function setup_kitty {
-    printh "Setup kitty"
+    print_bold "Setup kitty\n"
     if [[ -z $(command -v kitty) ]]; then
         echo "No kitty installation found, installing..."
         install_kitty
         echo "Kitty is installed, continue setup"
     fi
     replace_dir "$CONFIG_HOME/kitty" "$DF_HOME/kitty"
-    printf "Done\n\n"
+    print_bold "Done\n\n"
 }
 
 function install_nvim {
-    printh "Installing neovim"
+    print_bold "Installing neovim\n"
     runcmd curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
     runcmd sudo rm -rf /opt/nvim-linux-x86_64
     runcmd sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
     runcmd rm nvim-linux-x86_64.tar.gz
-    printf "Done\n\n"
+    print_bold "Done\n\n"
 }
 
 function setup_nvim {
-    printh "Setup neovim"
+    print_bold "Setup neovim\n"
     if [[ -z $(command -v nvim) ]]; then
         echo "No neovim installation found, installing..."
         install_nvim
         echo "Neovim is installed, continue setup"
     fi
     replace_dir "$CONFIG_HOME/nvim" "$DF_HOME/nvim"
-    printf "Done\n\n"
+    print_bold "Done\n\n"
 }
 
 function setup_config {
-    printh "Full setup"
+    print_info "Full setup\n"
     setup_zsh
     setup_git
     # setup_kitty
@@ -146,16 +164,16 @@ function setup_config {
 }
 
 function install_all {
-    printh "Installing..."
+    print_info "Installing...\n"
     install_nvim
     install_kitty
 }
 
-printh "https://sennery.dev"
-printh "dotfiles setup script"
+print_bold "\n> https://sennery.dev\n"
+print_bold "> dotfiles setup script\n\n"
 
 if [[ $interactive == "1" ]]; then
-    printh "running in interactive mode"
+    print_info "Running in interactive mode\n"
     PS3="What to setup: "
     CONFIGS=("config" "install" "install kitty" "install neovim" "quit")
     select conf in "${CONFIGS[@]}"; do
