@@ -197,9 +197,9 @@ return {
           -- Jump to the type of the word under your cursor.
           map('gT', builtin.lsp_type_definitions, '[G]oto [T]ype Definition')
           -- Fuzzy find all the symbols in your current document.
-          map('<leader>ds', builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('gsd', builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
           -- Fuzzy find all the symbols in your current workspace.
-          map('<leader>ws', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('gsw', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
           -- Rename the variable under your cursor.
           map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
           -- Execute a code action, usually your cursor needs to be on top of an error
