@@ -34,29 +34,25 @@ return {
       capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
-      local lspconfig = require 'lspconfig'
-
-      local function get_typescript_server_path(root_dir)
-        local global_ts = vim.fn.expand '$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/lib/node_modules/typescript/lib'
-        local project_ts = ''
-        local function check_dir(path)
-          project_ts = path .. '/node_modules/typescript/lib'
-          if vim.uv.fs_stat(project_ts) then
-            return path
-          end
-        end
-        if lspconfig.util.search_ancestors(root_dir, check_dir) then
-          return project_ts
-        else
-          return global_ts
-        end
-      end
-
       require('mason').setup()
-      local mason_registry = require 'mason-registry'
-      local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
+      local vue_language_server_path = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/@vue/language-server'
 
       local servers = {
+        vue_ls = {
+          capabilities = {
+            documentFormattingProvider = false,
+          },
+          settings = {
+            vue = {
+              inlayHints = {
+                inlineHandlerLeading = true,
+                missingProps = true,
+                optionsWrapper = true,
+                vBindShorthand = true,
+              },
+            },
+          },
+        },
         ts_ls = {
           filetypes = {
             'typescript',
@@ -74,9 +70,9 @@ return {
               },
             },
           },
-          on_new_config = function(new_config, new_root_dir)
-            new_config.init_options.tsdk = get_typescript_server_path(new_root_dir)
-          end,
+          -- on_new_config = function(new_config, new_root_dir)
+          --   new_config.init_options.tsdk = get_typescript_server_path(new_root_dir)
+          -- end,
           capabilities = {
             documentFormattingProvider = false,
           },
@@ -88,21 +84,6 @@ return {
                 includeInlayParameterNameHints = 'literals', -- 'none' | 'literals' | 'all'
                 includeInlayFunctionParameterTypeHints = true,
                 includeInlayPropertyDeclarationTypeHints = true,
-              },
-            },
-          },
-        },
-        volar = {
-          capabilities = {
-            documentFormattingProvider = false,
-          },
-          settings = {
-            vue = {
-              inlayHints = {
-                inlineHandlerLeading = true,
-                missingProps = true,
-                optionsWrapper = true,
-                vBindShorthand = true,
               },
             },
           },
@@ -167,17 +148,12 @@ return {
         'stylua', -- Used to format Lua code
         'prettierd',
       })
-
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            lspconfig[server_name].setup(server)
-          end,
-        },
-      }
+
+      for server, config in pairs(servers) do
+        vim.lsp.config(server, config)
+        vim.lsp.enable(server)
+      end
 
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
