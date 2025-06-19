@@ -71,17 +71,18 @@ function replace_dir {
     fi
 }
 
-CONFIG_HOME=$HOME/.config
+CONFIG_HOME="$HOME/.config"
 if [[ ! -d "$CONFIG_HOME" ]]; then
     mkdir -p "$CONFIG_HOME"
 fi
-DF_HOME=$HOME/dotfiles
+DF_HOME="$HOME/dotfiles"
 
 function setup_zsh {
     print_bold "Setup zsh\n"
     replace_file "$HOME/.bashrc" "$DF_HOME/.bashrc"
     replace_file "$HOME/.zshrc" "$DF_HOME/.zshrc"
     replace_file "$HOME/.zshenv" "$DF_HOME/.zshenv"
+    replace_file "$HOME/.zprofile" "$DF_HOME/.zprofile"
     if [[ $SHELL != $(which zsh) ]]; then
         runcmd chsh -s $(which zsh)
         # fedora only
