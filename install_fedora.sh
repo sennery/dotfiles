@@ -75,7 +75,7 @@ function install_kitty {
 function install_nvim {
     NVIM_HOME="$HOME/.local/opt/nvim"
     if [[ ! -d $NVIM_HOME ]]; then
-        mkdir -p $NVIM_HOME
+        runcmd mkdir -p $NVIM_HOME
     fi
 
     print_bold "Installing neovim\n"
