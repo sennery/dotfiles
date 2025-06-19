@@ -106,12 +106,15 @@ source $ZSH/oh-my-zsh.sh
 # fnm
 FNM_PATH="$HOME/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
-  export PATH="$HOME/.local/share/fnm:$PATH"
+  export PATH="$FNM_PATH:$PATH"
   eval "$(fnm env --use-on-cd --shell zsh)"
 fi
 
 # nvim
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+NVIM_PATH="$HOME/.local/opt/nvim/bin"
+if [ -d "$NVIM_PATH" ]; then
+  export PATH="$NVIM_PATH:$PATH"
+fi
 
 # Set default editor
 export EDITOR=nvim
@@ -119,5 +122,7 @@ export VISUAL=nvim
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+if [ -d "$PNPM_HOME" ]; then
+  export PATH="$PNPM_HOME:$PATH"
+fi
 # pnpm end

@@ -73,10 +73,16 @@ function install_kitty {
 }
 
 function install_nvim {
+    NVIM_HOME="$HOME/.local/opt/nvim"
+    if [[ ! -d $NVIM_HOME ]]; then
+        mkdir -p $NVIM_HOME
+    fi
+
     print_bold "Installing neovim\n"
     runcmd curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
-    runcmd sudo rm -rf /opt/nvim-linux-x86_64
-    runcmd sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+    runcmd tar -xzf nvim-linux-x86_64.tar.gz
+    runcmd rm -rf $NVIM_HOME
+    runcmd mv ./nvim-linux-x86_64 $NVIM_HOME
     runcmd rm nvim-linux-x86_64.tar.gz
     print_bold "Done\n\n"
 }
