@@ -25,18 +25,18 @@ There are scripts for different operating systems:
 ./install_macos.sh
 ```
 
-Each script could be run with `--dry` flag to see what commands will be executed without actully running them.
+Each script could be run with `--dry` flag to see what commands will be executed without actully running them:
 
 ```sh
 ./install_macos.sh --dry
 ```
-Also you can run each script with `-i` flag to run it interactively.
+Also you can run each script with `-i` flag to run it interactively:
 
 ```sh
 ./install_macos.sh -i
 ```
 
-Or you can pass the neccessary package names as arguments to install only them.
+Or you can pass the neccessary package names as arguments to install only them:
 
 ```sh
 ./install_macos.sh nvim fnm
@@ -44,10 +44,10 @@ Or you can pass the neccessary package names as arguments to install only them.
 
 ## Setup script
 
-This script will setup environment for development.
-
 > [!WARNING]
 > The script will create symlinks to this directory instead of existing configuration files. Existing files will be copied with the `.backup` prefix.
+
+This script will setup environment for development:
 
 ```sh
 ./setup.sh
