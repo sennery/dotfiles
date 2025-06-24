@@ -1,6 +1,4 @@
-<p align="center">
-  <img alt="sennery dotfiles" src="/docs/readme-img.png" />
-</p>
+![sennery dotfiles](/docs/readme-img.png)
 
 This is a repository for my **configuration files**.
 
