@@ -1,0 +1,26 @@
+# Make font size smaller
+font-size = 12
+
+# Cursor
+cursor-style-blink = false
+shell-integration-features = no-cursor
+
+# Hide mouse cursor when typing
+mouse-hide-while-typing = true
+
+# Treat the option key as alt
+macos-option-as-alt = true
+
+# No shadow looks cleaner
+macos-window-shadow = false
+
+# Stop Ghostty when the last window is closed
+quit-after-last-window-closed = true
+
+# Disable window padding
+window-padding-y = 0
+window-padding-x = 0
+
+# Adjust cell size
+adjust-cell-width = -1
+# adjust-cell-height = 3

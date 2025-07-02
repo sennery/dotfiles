@@ -114,12 +114,22 @@ function setup_nvim {
     print_bold "Done\n\n"
 }
 
+function setup_ghostty {
+    print_bold "Setup ghostty\n"
+    if [[ -z $(command -v ghostty) ]]; then
+        echo "No ghostty installation found, don't forget to install it"
+    fi
+    replace_dir "$CONFIG_HOME/ghostty" "$DF_CONFIG/ghostty"
+    print_bold "Done\n\n"
+}
+
 function setup_config {
     print_info "Full setup\n"
     setup_zsh
     setup_git
     # setup_kitty
     setup_nvim
+    setup_ghostty
 }
 
 print_bold "\n> https://sennery.dev\n"
