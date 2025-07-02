@@ -58,12 +58,10 @@ function replace_file {
 function replace_dir {
     local old_dir=$1
     local new_dir=$2
-    if [[ -d "${old_dir}" ]]; then
-        if [[ -L "${old_dir}" ]]; then
-            runcmd unlink "${old_dir}"
-        else
-            runcmd mv "${old_dir}" "${old_dir} backup"
-        fi
+    if [[ -L "${old_dir}" ]]; then
+        runcmd unlink "${old_dir}"
+    elif [[ -d "${old_dir}" ]]; then
+        runcmd mv "${old_dir}" "${old_dir} backup"
     fi
 
     if [[ -n "${new_dir}" && -n "${old_dir}" ]]; then
@@ -76,6 +74,7 @@ if [[ ! -d "$CONFIG_HOME" ]]; then
     mkdir -p "$CONFIG_HOME"
 fi
 DF_HOME="$HOME/dotfiles"
+DF_CONFIG="$DF_HOME/.config"
 
 function setup_zsh {
     print_bold "Setup zsh\n"
@@ -102,7 +101,7 @@ function setup_kitty {
     if [[ -z $(command -v kitty) ]]; then
         echo "No kitty installation found, don't forget to install it"
     fi
-    replace_dir "$CONFIG_HOME/kitty" "$DF_HOME/kitty"
+    replace_dir "$CONFIG_HOME/kitty" "$DF_CONFIG/kitty"
     print_bold "Done\n\n"
 }
 
@@ -111,7 +110,7 @@ function setup_nvim {
     if [[ -z $(command -v nvim) ]]; then
         echo "No neovim installation found, don't forget to install it"
     fi
-    replace_dir "$CONFIG_HOME/nvim" "$DF_HOME/nvim"
+    replace_dir "$CONFIG_HOME/nvim" "$DF_CONFIG/nvim"
     print_bold "Done\n\n"
 }
 
