@@ -3,3 +3,4 @@
 	name = Arsenii Likhachev
 [core]
 	autocrlf = input
+	editor = nvim
