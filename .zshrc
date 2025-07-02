@@ -19,10 +19,6 @@ if [ -d "$NVIM_PATH" ]; then
   export PATH="$NVIM_PATH:$PATH"
 fi
 
-# Set default editor
-export EDITOR="$(which nvim)"
-export VISUAL="$EDITOR"
-
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 if [ -d "$PNPM_HOME" ]; then
