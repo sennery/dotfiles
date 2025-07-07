@@ -30,10 +30,6 @@ return {
     config = function()
       -- vim.lsp.set_log_level 'debug'
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-      capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-
       require('mason').setup()
       local vue_language_server_path = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/@vue/language-server'
 
