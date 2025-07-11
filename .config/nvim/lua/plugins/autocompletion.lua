@@ -13,6 +13,7 @@ return {
         preset = 'default',
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
+        ['<C-e>'] = { 'show', 'show_documentation', 'hide_documentation' },
       },
 
       appearance = {
