@@ -34,6 +34,41 @@ return {
       local vue_language_server_path = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/@vue/language-server'
 
       local servers = {
+        vtsls = {
+          filetypes = {
+            'typescript',
+            'javascript',
+            'javascriptreact',
+            'typescriptreact',
+            'vue',
+          },
+          capabilities = {
+            documentFormattingProvider = false,
+          },
+          settings = {
+            vtsls = {
+              tsserver = {
+                globalPlugins = {
+                  {
+                    name = '@vue/typescript-plugin',
+                    location = vue_language_server_path,
+                    languages = { 'vue' },
+                    configNamespace = 'typescript',
+                  },
+                },
+              },
+            },
+            typescript = {
+              inlayHints = {
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayParameterNameHints = 'literals', -- 'none' | 'literals' | 'all'
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+              },
+            },
+          },
+        },
         vue_ls = {
           capabilities = {
             documentFormattingProvider = false,
@@ -48,41 +83,31 @@ return {
               },
             },
           },
-        },
-        ts_ls = {
-          filetypes = {
-            'typescript',
-            'javascript',
-            'javascriptreact',
-            'typescriptreact',
-            'vue',
-          },
-          init_options = {
-            plugins = {
-              {
-                name = '@vue/typescript-plugin',
-                location = vue_language_server_path,
-                languages = { 'vue' },
-              },
-            },
-          },
-          -- on_new_config = function(new_config, new_root_dir)
-          --   new_config.init_options.tsdk = get_typescript_server_path(new_root_dir)
-          -- end,
-          capabilities = {
-            documentFormattingProvider = false,
-          },
-          settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayVariableTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayParameterNameHints = 'literals', -- 'none' | 'literals' | 'all'
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-              },
-            },
-          },
+          on_init = function(client)
+            client.handlers['tsserver/request'] = function(_, result, context)
+              local clients = vim.lsp.get_clients { bufnr = context.bufnr, name = 'vtsls' }
+              if #clients == 0 then
+                vim.notify('Could not find `vtsls` lsp client, `vue_ls` would not work without it.', vim.log.levels.ERROR)
+                return
+              end
+              local ts_client = clients[1]
+
+              local param = unpack(result)
+              local id, command, payload = unpack(param)
+              ts_client:exec_cmd({
+                title = 'vue_request_forward', -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
+                command = 'typescript.tsserverRequest',
+                arguments = {
+                  command,
+                  payload,
+                },
+              }, { bufnr = context.bufnr }, function(_, r)
+                local response_data = { { id, r.body } }
+                ---@diagnostic disable-next-line: param-type-mismatch
+                client:notify('tsserver/response', response_data)
+              end)
+            end
+          end,
         },
 
         cssls = {},
