@@ -8,6 +8,8 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 vim.opt.laststatus = 3
 vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 
 -- Sync clipboard between OS and Neovim.
 vim.opt.clipboard = 'unnamedplus'
