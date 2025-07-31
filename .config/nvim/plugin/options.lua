@@ -63,7 +63,7 @@ vim.fn.sign_define('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSi
 vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticSignHint' })
 
 vim.diagnostic.config {
-  virtual_lines = {
+  virtual_text = {
     current_line = true,
   },
 

@@ -10,6 +10,17 @@ vim.keymap.set('n', ']d', function()
 end, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>v', function()
+  local config = vim.diagnostic.config()
+  if config and config.virtual_lines then
+    config.virtual_lines = false
+    config.virtual_text = { current_line = true }
+  else
+    config.virtual_lines = true
+    config.virtual_text = false
+  end
+  vim.diagnostic.config(config)
+end, { desc = 'Toggle [V]irtual line diagnostic' })
 
 --  Use CTRL+<hjkl> to switch between windows
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
