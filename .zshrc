@@ -24,3 +24,9 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 if [ -d "$PNPM_HOME" ]; then
   export PATH="$PNPM_HOME:$PATH"
 fi
+
+# dotfiles
+DF_HOME="$HOME/dotfiles"
+if [ -d "$DF_HOME" ]; then
+  export PATH="$DF_HOME:$PATH"
+fi
