@@ -183,6 +183,7 @@ return {
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>b', group = '[B]uffers' },
         { '<leader>g', group = '[G]it' },
+        { '<leader>h', group = '[H]unk' },
       }
     end,
   },
