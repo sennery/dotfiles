@@ -1,7 +1,7 @@
 # oh-my-zsh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
-plugins=(git fnm npm)
+plugins=(git fnm npm brew)
 source $ZSH/oh-my-zsh.sh
 
 # fnm
