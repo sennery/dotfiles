@@ -2,16 +2,12 @@ return {
   -- Highlight, edit, and navigate code
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
+    branch = 'main',
     build = ':TSUpdate',
     lazy = false,
-    cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
-    dependencies = {
-      { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
-      { 'nvim-treesitter/nvim-treesitter-textobjects', lazy = true },
-    },
-    opts = {
-      ensure_installed = {
+    dependencies = {},
+    config = function()
+      local parsers = {
         'bash',
         'c',
         'diff',
@@ -38,59 +34,84 @@ return {
         'vimdoc',
         'xml',
         'yaml',
-      },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
-      },
-      indent = { enable = true, disable = { 'ruby' } },
-      -- incremental_selection = {
-      --   enable = true,
-      --   keymaps = {
-      --     init_selection = '<TAB>',
-      --     node_incremental = '<TAB>',
-      --     node_decremental = '<bs>',
-      --     scope_incremental = false,
-      --   },
-      -- },
-      textobjects = {
-        move = {
-          enable = true,
-          goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer' },
-          goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer' },
-          goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer' },
-          goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer' },
-        },
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ab'] = '@block.outer',
-            ['ib'] = '@block.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
-            -- ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
-          },
-        },
-        -- swap = {
-        --   enable = true,
-        -- },
-      },
-    },
-    config = function(_, opts)
-      require('nvim-treesitter.install').prefer_git = true
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
+      }
+
+      local group = vim.api.nvim_create_augroup('custom-treesitter', { clear = true })
+      vim.api.nvim_create_autocmd('FileType', {
+        group = group,
+        callback = function(args)
+          local ts = require 'nvim-treesitter'
+          local lang = vim.treesitter.language.get_lang(args.match)
+          if not vim.list_contains(ts.get_installed(), lang) and vim.list_contains(parsers, lang) then
+            ts.install(lang):wait(300000)
+          end
+
+          local bufnr = args.buf
+          local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+          if not ok or not parser then
+            return
+          end
+          pcall(vim.treesitter.start, bufnr)
+          vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+        end,
+      })
     end,
   },
+
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'main',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('nvim-treesitter-textobjects').setup {
+        select = {
+          lookahead = true,
+        },
+        move = {
+          set_jumps = true,
+        },
+      }
+
+      local select_keymap = function(keys, query)
+        vim.keymap.set({ 'x', 'o' }, keys, function()
+          require('nvim-treesitter-textobjects.select').select_textobject(query, 'textobjects')
+        end)
+      end
+      select_keymap('af', '@function.outer')
+      select_keymap('if', '@function.inner')
+      select_keymap('ab', '@block.outer')
+      select_keymap('ib', '@block.inner')
+      select_keymap('ac', '@class.outer')
+      select_keymap('ic', '@class.inner')
+      select_keymap('as', '@scope')
+
+      local move_keymap = function(keys, query, method)
+        local method_func = require('nvim-treesitter-textobjects.move')[method]
+        vim.keymap.set({ 'n', 'x', 'o' }, keys, function()
+          method_func(query, 'textobjects')
+        end)
+      end
+      move_keymap(']f', '@function.outer', 'goto_next_start')
+      move_keymap('[f', '@function.outer', 'goto_previous_start')
+      move_keymap(']F', '@function.outer', 'goto_next_end')
+      move_keymap('[F', '@function.outer', 'goto_previous_end')
+      move_keymap(']]', '@block.outer', 'goto_next_start')
+      move_keymap('[[', '@block.outer', 'goto_previous_start')
+      move_keymap('][', '@block.outer', 'goto_next_end')
+      move_keymap('[]', '@block.outer', 'goto_previous_end')
+      move_keymap(']c', '@class.outer', 'goto_next_start')
+      move_keymap('[c', '@class.outer', 'goto_previous_start')
+      move_keymap(']C', '@class.outer', 'goto_next_end')
+      move_keymap('[C', '@class.outer', 'goto_previous_end')
+    end,
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = {},
+  },
+
   {
     'windwp/nvim-ts-autotag',
     lazy = false,
