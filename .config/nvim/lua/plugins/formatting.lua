@@ -6,6 +6,8 @@ local function has_config_file(pattern)
   return false
 end
 
+local prettier_format = { 'prettierd', 'prettier', stop_after_first = true }
+
 return {
   -- Autoformat
   {
@@ -23,17 +25,23 @@ return {
     },
     opts = {
       notify_on_error = false,
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_format = 'fallback',
-      },
+      -- format_on_save = {
+      --   timeout_ms = 500,
+      --   lsp_format = 'fallback',
+      -- },
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
-        typescript = { 'prettierd', 'prettier', stop_after_first = true },
-        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-        vue = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = prettier_format,
+        typescript = prettier_format,
+        javascriptreact = prettier_format,
+        typescriptreact = prettier_format,
+        vue = prettier_format,
+        css = prettier_format,
+        scss = prettier_format,
+        html = prettier_format,
+        json = prettier_format,
+        yaml = prettier_format,
+        markdown = prettier_format,
       },
       formatters = {
         prettierd = {
