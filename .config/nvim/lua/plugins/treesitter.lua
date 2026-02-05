@@ -34,6 +34,8 @@ return {
         'vimdoc',
         'xml',
         'yaml',
+        'dockerfile',
+        'go',
       }
 
       local group = vim.api.nvim_create_augroup('custom-treesitter', { clear = true })
@@ -72,10 +74,10 @@ return {
         },
       }
 
-      local select_keymap = function(keys, query)
+      local select_keymap = function(keys, query, desc)
         vim.keymap.set({ 'x', 'o' }, keys, function()
           require('nvim-treesitter-textobjects.select').select_textobject(query, 'textobjects')
-        end)
+        end, { desc = desc or query })
       end
       select_keymap('af', '@function.outer')
       select_keymap('if', '@function.inner')
@@ -85,11 +87,11 @@ return {
       select_keymap('ic', '@class.inner')
       select_keymap('as', '@scope')
 
-      local move_keymap = function(keys, query, method)
+      local move_keymap = function(keys, query, method, desc)
         local method_func = require('nvim-treesitter-textobjects.move')[method]
         vim.keymap.set({ 'n', 'x', 'o' }, keys, function()
           method_func(query, 'textobjects')
-        end)
+        end, { desc = desc or method .. ' ' .. query })
       end
       move_keymap(']f', '@function.outer', 'goto_next_start')
       move_keymap('[f', '@function.outer', 'goto_previous_start')
