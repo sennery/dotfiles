@@ -34,51 +34,6 @@ return {
     opts = { signs = false },
   },
 
-  -- Collection of various small independent plugins/modules
-  {
-    'echasnovski/mini.nvim',
-    config = function()
-      -- Better Around/Inside textobjects
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      -- vim.keymap.set({ 'n', 'x' }, 's', '<Nop>')
-      require('mini.surround').setup()
-      require('mini.pairs').setup()
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = {
-          'help',
-          'alpha',
-          'dashboard',
-          'neo-tree',
-          'Trouble',
-          'trouble',
-          'lazy',
-          'mason',
-          'notify',
-          'toggleterm',
-          'lazyterm',
-          'noice',
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-
-      vim.keymap.set('n', '<leader>bd', function()
-        require('mini.bufremove').delete(0, false)
-      end, { desc = '[D]elete Current Buffer' })
-    end,
-  },
-
   -- Location line
   {
     'SmiteshP/nvim-navic',
