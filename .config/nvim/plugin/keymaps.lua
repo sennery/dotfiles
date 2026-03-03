@@ -28,4 +28,18 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-vim.keymap.set('n', '<leader>t', ':term<CR>a', { desc = 'Open [T]erminal Buffer' })
+-- Open terminal function
+local function open_terminal()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.api.nvim_win_set_width(0, 50)
+  vim.cmd.startinsert()
+end
+vim.keymap.set('n', '<leader>to', open_terminal, { desc = 'Open [T]erminal' })
+-- Open terminal and run command keymap
+vim.keymap.set('n', '<leader>tn', function()
+  open_terminal()
+  vim.fn.chansend(vim.bo.channel, { 'npm run dev\r\n' })
+  vim.cmd.stopinsert()
+  vim.cmd.wincmd 'p'
+end, { desc = 'Open [T]erminal and start [N]PM' })
