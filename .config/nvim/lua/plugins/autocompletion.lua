@@ -28,7 +28,11 @@ return {
       completion = {
         menu = {
           draw = {
-            columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'kind', 'source_name', gap = 1 } },
+            columns = {
+              { 'kind_icon' },
+              { 'label', 'label_description', gap = 1 },
+              { 'kind', 'source_name', gap = 1 },
+            },
             components = {
               source_name = {
                 width = { max = 30 },
