@@ -241,9 +241,8 @@ return {
 
           if client:supports_method 'textDocument/codeLens' then
             map('<leader>cl', function()
-              local lenses = vim.lsp.codelens.get(event.buf)
-              vim.lsp.codelens.display(lenses, event.buf, event.data.client_id)
-            end, 'Display [C]ode [L]enses')
+              vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
+            end, 'Toggle [C]ode [L]enses')
           end
         end,
       })
