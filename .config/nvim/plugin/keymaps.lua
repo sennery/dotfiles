@@ -35,7 +35,7 @@ local function open_terminal()
   vim.api.nvim_win_set_width(0, 50)
   vim.cmd.startinsert()
 end
-vim.keymap.set('n', '<leader>to', open_terminal, { desc = 'Open [T]erminal' })
+vim.keymap.set('n', '<leader>tt', open_terminal, { desc = 'Open [T]erminal' })
 -- Open terminal and run command keymap
 vim.keymap.set('n', '<leader>tn', function()
   open_terminal()
