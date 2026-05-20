@@ -120,13 +120,13 @@ if [[ $interactive == "1" ]]; then
                 install_nvim
                 ;;
             fnm)
-                install_nvim
+                install_fnm
                 ;;
             omz)
                 install_omz
                 ;;
             ghostty)
-                install_omz
+                install_ghostty
                 ;;
             quit)
                 echo "Okay, bye!"
