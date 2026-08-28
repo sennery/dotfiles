@@ -8,6 +8,16 @@ return {
       overrides = function(colors)
         local theme = colors.theme
         return {
+          -- Adjust the Pmenu highlight groups to match the colorscheme
+          Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
+          PmenuSel = { fg = 'NONE', bg = theme.ui.bg_p2 },
+          PmenuSbar = { bg = theme.ui.bg_m1 },
+          PmenuThumb = { bg = theme.ui.bg_p2 },
+
+          -- Make the floating window borderless
+          FloatBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+
+          -- Make the Telescope window borderless
           TelescopeTitle = { fg = theme.ui.special, bold = true },
           TelescopePromptNormal = { bg = theme.ui.bg_p1 },
           TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
@@ -16,23 +26,10 @@ return {
           TelescopePreviewNormal = { bg = theme.ui.bg_dim },
           TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
 
-          Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
-          PmenuSel = { fg = 'NONE', bg = theme.ui.bg_p2 },
-          PmenuSbar = { bg = theme.ui.bg_m1 },
-          PmenuThumb = { bg = theme.ui.bg_p2 },
-
-          FloatBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
-
-          NoiceCmdlinePopupBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
-          NoiceCmdlinePopupTitle = { fg = theme.ui.special, bg = theme.ui.bg_p1 },
-          NoiceCmdlinePopup = { fg = theme.ui.special, bg = theme.ui.bg_p1 },
-          NoiceCmdlineIcon = { fg = theme.ui.special, bg = theme.ui.bg_p1 },
-          NoicePopupmenuBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
-          NoicePopupmenu = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
-          NoiceConfirmBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
-          NoiceConfirm = { fg = theme.ui.special, bg = theme.ui.bg_p1 },
-
-          NeoTreeWinSeparator = { fg = theme.ui.bg_gutter, bg = theme.ui.bg_gutter },
+          -- Adjust the colors of snacks.nvim picker to match the colorscheme
+          SnacksPickerInput = { fg = theme.ui.fg, bg = theme.ui.bg_p1 },
+          SnacksPickerList = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+          SnacksPickerPreview = { fg = theme.ui.fg, bg = theme.ui.bg_dim },
         }
       end,
     },

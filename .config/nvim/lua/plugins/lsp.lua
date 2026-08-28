@@ -174,20 +174,19 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          local builtin = require 'telescope.builtin'
           -- Jump to the definition of the word under your cursor.
-          map('gd', builtin.lsp_definitions, '[G]oto [D]efinition')
+          map('gd', Snacks.picker.lsp_definitions, '[G]oto [D]efinition')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
           -- Find references for the word under your cursor.
-          map('gR', builtin.lsp_references, '[G]oto [R]eferences')
+          map('gR', Snacks.picker.lsp_references, '[G]oto [R]eferences')
           -- Jump to the implementation of the word under your cursor.
-          map('gI', builtin.lsp_implementations, '[G]oto [I]mplementation')
+          map('gI', Snacks.picker.lsp_implementations, '[G]oto [I]mplementation')
           -- Jump to the type of the word under your cursor.
-          map('gT', builtin.lsp_type_definitions, '[G]oto [T]ype Definition')
+          map('gT', Snacks.picker.lsp_type_definitions, '[G]oto [T]ype Definition')
           -- Fuzzy find all the symbols in your current document.
-          map('gsd', builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('gsd', Snacks.picker.lsp_symbols, '[D]ocument [S]ymbols')
           -- Fuzzy find all the symbols in your current workspace.
-          map('gsw', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('gsw', Snacks.picker.lsp_workspace_symbols, '[W]orkspace [S]ymbols')
           -- Rename the variable under your cursor.
           map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
           -- Execute a code action, usually your cursor needs to be on top of an error
@@ -206,28 +205,28 @@ return {
             end
           end
 
-          if client:supports_method 'textDocument/documentHighlight' then
-            local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
-            })
-
-            vim.api.nvim_create_autocmd('LspDetach', {
-              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-              callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
-              end,
-            })
-          end
+          -- if client:supports_method 'textDocument/documentHighlight' then
+          --   local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+          --   vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+          --     buffer = event.buf,
+          --     group = highlight_augroup,
+          --     callback = vim.lsp.buf.document_highlight,
+          --   })
+          --
+          --   vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+          --     buffer = event.buf,
+          --     group = highlight_augroup,
+          --     callback = vim.lsp.buf.clear_references,
+          --   })
+          --
+          --   vim.api.nvim_create_autocmd('LspDetach', {
+          --     group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+          --     callback = function(event2)
+          --       vim.lsp.buf.clear_references()
+          --       vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+          --     end,
+          --   })
+          -- end
 
           if client:supports_method 'textDocument/documentSymbol' then
             require('nvim-navic').attach(client, event.buf)
