@@ -6,7 +6,7 @@ local function has_config_file(pattern)
   return false
 end
 
-local prettier_format = { 'prettierd', 'prettier', stop_after_first = true }
+local prettier_format = { 'prettier', 'prettierd', stop_after_first = true }
 
 return {
   -- Autoformat

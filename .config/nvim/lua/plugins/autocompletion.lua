@@ -65,6 +65,7 @@ return {
 
   -- AI Autocompletion
   {
+    enabled = false,
     'supermaven-inc/supermaven-nvim',
     opts = {},
   },
